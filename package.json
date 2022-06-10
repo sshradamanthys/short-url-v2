@@ -1,0 +1,17 @@
+{
+  "name": "bw-express",
+  "version": "1.0.0",
+  "description": "Rest API - Bluuweb",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon ./index.js"
+  },
+  "author": "Denis Valdivieso",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "2.0.16"
+  },
+  "dependencies": {
+    "express": "4.18.1"
+  }
+}
