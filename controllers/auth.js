@@ -1,12 +1,2 @@
-export const login = (req, res) => {
-  res.json({
-    msg: 'login'
-  })
-}
-
-export const register = (req, res) => {
-  console.log(req.body)
-  res.json({
-    msg: 'register'
-  })
-}
+export const register = (req, res) => res.json({ msg: 'registered' })
+export const login = (req, res) => res.json({ msg: 'logged in' })
