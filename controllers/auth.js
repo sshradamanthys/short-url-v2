@@ -1,4 +1,5 @@
 import { User } from '../models/User.js'
+import { generateToken } from '../utils/generateToken.js'
 
 export const register = async (req, res) => {
   const { email, password } = req.body
@@ -10,8 +11,8 @@ export const register = async (req, res) => {
     user = new User({ email, password }) // create a new user
     await user.save()
 
-    // jwt
-    return res.status(201).json({ msg: 'user saved' })
+    // token & expire time
+    return res.status(201).json(generateToken(user.id))
   } catch (error) {
     console.log(error.message)
     res.status(400).json({ error: error.message })
@@ -28,10 +29,20 @@ export const login = async (req, res) => {
     const match = await user.comparePassword(password)
     if (!match) throw new Error('incorrect credentials')
 
-    // jwt
-    return res.status(200).json({ msg: 'user logged in' })
+    // token & expire time
+    return res.json(generateToken(user.id))
   } catch (error) {
     console.log(error.message)
     res.status(403).json({ error: error.message })
+  }
+}
+
+export const test = async (req, res) => {
+  try {
+    const user = await User.findById(req.uid)
+    return res.json({ email: user.email })
+  } catch (error) {
+    console.log(error)
+    res.status(500)
   }
 }

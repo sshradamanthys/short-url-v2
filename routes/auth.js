@@ -1,7 +1,8 @@
 import { Router } from 'express'
-import { login, register } from '../controllers/auth.js'
+import { login, register, test } from '../controllers/auth.js'
 import { body } from 'express-validator'
 import { validateForm } from '../middlewares/validateForm.js'
+import { requireToken } from '../middlewares/requireToken.js'
 
 const router = Router()
 
@@ -16,5 +17,7 @@ const password = body('password', 'Min 6 characters')
 router.post('/register', email, password, validateForm, register)
 
 router.post('/login', email, password, validateForm, login)
+
+router.get('/test', requireToken, test)
 
 export default router
