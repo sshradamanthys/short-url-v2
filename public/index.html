@@ -41,8 +41,8 @@
 
         if (!res.ok) return
 
-        const data = await res.json()
-        console.log(data)
+        const { token } = await res.json()
+        localStorage.setItem('token', token)
       } catch (error) {
         console.log(error)
       }

@@ -30,7 +30,16 @@ export const login = async (req, res) => {
     if (!match) throw new Error('incorrect credentials')
 
     // token & expire time
-    return res.json(generateToken(user.id))
+    // return res.json(generateToken(user.id))
+    const { token, expiresIn } = generateToken(user.id)
+
+    // create cookie
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: !process.env.MODE
+    })
+
+    return res.json({ token, expiresIn })
   } catch (error) {
     console.log(error.message)
     res.status(403).json({ error: error.message })
