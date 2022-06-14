@@ -12,21 +12,18 @@
     <h2 id="info">Email:</h2>
 
     <script>
-      const token = localStorage.getItem('token')
-
       document.addEventListener('DOMContentLoaded', async (e) => {
         try {
-          // const res = await fetch('/api/v1/test', {
-          //   method: 'GET',
-          //   headers: {
-          //     Authorization: `Bearer ${token}`,
-          //     'Content-Type': 'application/json'
-          //   }
-          // })
+          const resToken = await fetch('/api/v1/refresh', {
+            credentials: 'include'
+          })
+
+          const { token } = await resToken.json()
 
           const res = await fetch('/api/v1/test', {
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`
             },
             credentials: 'include'
           })

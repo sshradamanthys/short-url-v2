@@ -1,5 +1,6 @@
 import { User } from '../models/User.js'
-import { generateToken } from '../utils/generateToken.js'
+import jwt from 'jsonwebtoken'
+import { memoryToken, cookieToken } from '../utils/generateTokens.js'
 
 export const register = async (req, res) => {
   const { email, password } = req.body
@@ -12,7 +13,8 @@ export const register = async (req, res) => {
     await user.save()
 
     // token & expire time
-    return res.status(201).json(generateToken(user.id))
+    const { token, expiresIn } = storageToken(user.id)
+    return res.json({ token, expiresIn })
   } catch (error) {
     console.log(error.message)
     res.status(400).json({ error: error.message })
@@ -30,14 +32,9 @@ export const login = async (req, res) => {
     if (!match) throw new Error('incorrect credentials')
 
     // token & expire time
-    // return res.json(generateToken(user.id))
-    const { token, expiresIn } = generateToken(user.id)
+    const { token, expiresIn } = memoryToken(user.id)
 
-    // create cookie
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: !process.env.MODE
-    })
+    cookieToken(user.id, res)
 
     return res.json({ token, expiresIn })
   } catch (error) {
@@ -53,5 +50,20 @@ export const test = async (req, res) => {
   } catch (error) {
     console.log(error)
     res.status(500)
+  }
+}
+
+export const refresh = async (req, res) => {
+  try {
+    const refreshToken = req.cookies.refreshToken
+    if (!refreshToken) throw new Error('refresh token is required')
+
+    const { uid } = jwt.verify(refreshToken, process.env.JWT_REFRESH)
+
+    const { token, expiresIn } = memoryToken(uid)
+    return res.json({ token, expiresIn })
+  } catch (error) {
+    console.log(error)
+    res.status(403).json({ error: error.message })
   }
 }
