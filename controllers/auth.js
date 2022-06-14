@@ -1,6 +1,6 @@
 import { User } from '../models/User.js'
 import jwt from 'jsonwebtoken'
-import { memoryToken, cookieToken } from '../utils/generateTokens.js'
+import { memoryToken, cookieToken } from '../utils/generateToken.js'
 
 export const register = async (req, res) => {
   const { email, password } = req.body
@@ -55,20 +55,15 @@ export const test = async (req, res) => {
 
 export const refresh = (req, res) => {
   try {
-    const refreshToken = req.cookies.refreshToken
-    if (!refreshToken) throw new Error('refresh token is required')
-
-    const { uid } = jwt.verify(refreshToken, process.env.JWT_REFRESH)
-
-    const { token, expiresIn } = memoryToken(uid)
+    const { token, expiresIn } = memoryToken(req.uid)
     return res.json({ token, expiresIn })
   } catch (error) {
     console.log(error)
-    res.status(403).json({ error: error.message })
+    res.status(500)
   }
 }
 
 export const logout = (req, res) => {
-  res.clearCookie('refreshToken')
+  res.clearCookie('cookieToken')
   return res.json({ msg: 'log out' })
 }

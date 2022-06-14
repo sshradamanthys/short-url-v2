@@ -13,6 +13,7 @@
     <button id="logout">logout</button>
 
     <script>
+      const info = document.getElementById('info')
       const logout = document.getElementById('logout')
       logout.addEventListener('click', async (e) => {
         const res = await fetch('/api/v1/logout')
@@ -43,8 +44,6 @@
           console.log(error)
         }
       })
-
-      const info = document.getElementById('info')
     </script>
   </body>
 </html>

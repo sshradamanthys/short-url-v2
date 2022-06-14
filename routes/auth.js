@@ -1,26 +1,18 @@
 import { Router } from 'express'
 import { login, register, test, refresh, logout } from '../controllers/auth.js'
-import { body } from 'express-validator'
+
 import { validateForm } from '../middlewares/validateForm.js'
-import { requireToken } from '../middlewares/requireToken.js'
+import { cookieToken, memoryToken } from '../middlewares/requireToken.js'
 
 const router = Router()
 
-const email = body('email', 'Invalid email format')
-  .trim()
-  .isEmail()
-  .normalizeEmail()
-const password = body('password', 'Min 6 characters')
-  .trim()
-  .isLength({ min: 6 })
+router.post('/register', validateForm, register)
 
-router.post('/register', email, password, validateForm, register)
+router.post('/login', validateForm, login)
 
-router.post('/login', email, password, validateForm, login)
+router.get('/test', memoryToken, test)
 
-router.get('/test', requireToken, test)
-
-router.get('/refresh', refresh)
+router.get('/refresh', cookieToken, refresh)
 router.get('/logout', logout)
 
 export default router

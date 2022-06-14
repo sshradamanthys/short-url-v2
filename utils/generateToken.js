@@ -16,12 +16,12 @@ export const cookieToken = (uid, res) => {
   const expiresIn = 60 * 60 * 24 * 30 * 1000
 
   try {
-    const refreshToken = jwt.sign({ uid }, process.env.JWT_REFRESH, {
+    const cookieToken = jwt.sign({ uid }, process.env.JWT_REFRESH, {
       expiresIn
     })
 
     // creating a cookie with token info
-    res.cookie('refreshToken', refreshToken, {
+    res.cookie('cookieToken', cookieToken, {
       httpOnly: true,
       secure: !(process.env.MODE === 'development'),
       expires: new Date(Date.now() + expiresIn)
