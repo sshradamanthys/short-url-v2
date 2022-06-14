@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { login, register, test, refresh } from '../controllers/auth.js'
+import { login, register, test, refresh, logout } from '../controllers/auth.js'
 import { body } from 'express-validator'
 import { validateForm } from '../middlewares/validateForm.js'
 import { requireToken } from '../middlewares/requireToken.js'
@@ -21,5 +21,6 @@ router.post('/login', email, password, validateForm, login)
 router.get('/test', requireToken, test)
 
 router.get('/refresh', refresh)
+router.get('/logout', logout)
 
 export default router

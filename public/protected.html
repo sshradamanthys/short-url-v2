@@ -10,8 +10,15 @@
   <body>
     <h1>Protected</h1>
     <h2 id="info">Email:</h2>
+    <button id="logout">logout</button>
 
     <script>
+      const logout = document.getElementById('logout')
+      logout.addEventListener('click', async (e) => {
+        const res = await fetch('/api/v1/logout')
+        console.log(res)
+      })
+
       document.addEventListener('DOMContentLoaded', async (e) => {
         try {
           const resToken = await fetch('/api/v1/refresh', {

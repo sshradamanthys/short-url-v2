@@ -53,7 +53,7 @@ export const test = async (req, res) => {
   }
 }
 
-export const refresh = async (req, res) => {
+export const refresh = (req, res) => {
   try {
     const refreshToken = req.cookies.refreshToken
     if (!refreshToken) throw new Error('refresh token is required')
@@ -66,4 +66,9 @@ export const refresh = async (req, res) => {
     console.log(error)
     res.status(403).json({ error: error.message })
   }
+}
+
+export const logout = (req, res) => {
+  res.clearCookie('refreshToken')
+  return res.json({ msg: 'log out' })
 }
