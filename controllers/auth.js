@@ -13,8 +13,11 @@ export const register = async (req, res) => {
     await user.save()
 
     // token & expire time
-    const { token, expiresIn } = storageToken(user.id)
-    return res.json({ token, expiresIn })
+    const { token, expiresIn } = memoryToken(user.id)
+
+    cookieToken(user.id, res)
+
+    return res.status(201).json({ token, expiresIn })
   } catch (error) {
     console.log(error.message)
     res.status(400).json({ error: error.message })

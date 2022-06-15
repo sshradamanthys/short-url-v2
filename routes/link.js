@@ -1,21 +1,30 @@
 import { Router } from 'express'
 import { memoryToken } from '../middlewares/requireToken.js'
-import { getLinks } from '../controllers/link.js'
+import { validateLink } from '../middlewares/validateLink.js'
+import { validateParam } from '../middlewares/validateParam.js'
+import {
+  createLink,
+  getLink,
+  getLinks,
+  updateLink,
+  deleteLink
+} from '../controllers/link.js'
 
 const router = Router()
+
+// create one link
+router.post('/', memoryToken, validateLink, createLink)
+
+// get one link by ID
+router.get('/:id', memoryToken, validateParam, getLink)
 
 // getAll links
 router.get('/', memoryToken, getLinks)
 
-// get one link by ID
-router.get('/:id', (req, res) => {
-  const { id } = req.params
-  console.log(id)
-  res.send({ msg: 'all links' })
-})
+// update one link
+router.patch('/:id', memoryToken, validateParam, validateLink, updateLink)
 
-// router.post('/', (req, res) => res.send({ msg: 'all links' }))
-// router.patch('/:id', (req, res) => res.send({ msg: 'all links' }))
-// router.delete('/', (req, res) => res.send({ msg: 'all links' }))
+// delete one link
+router.delete('/:id', memoryToken, validateParam, deleteLink)
 
 export default router
