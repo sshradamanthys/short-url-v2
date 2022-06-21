@@ -29,21 +29,18 @@ export const getLinks = async (req, res) => {
 
 export const getLink = async (req, res) => {
   try {
-    const { id } = req.params
-    const link = await Link.findById(id)
+    const { short } = req.params
+    const link = await Link.findOne({ short })
+
     if (!link)
       return res
         .status(404)
         .json({ error: 'this link does not exist in the db' })
 
-    // if (!link.uid.equals(req.uid))
-    //   return res.status(403).json({ error: 'Unauthorized' })
-
-    return res.json({ link })
+    return res.json({ original: link.original })
   } catch (error) {
-    console.log(error.kind)
-    if (error.kind === 'ObjectId')
-      return res.status(403).json({ error: 'id format incorrect' })
+    console.log(error)
+
     return res.status(500).json({ error: 'Server error' })
   }
 }

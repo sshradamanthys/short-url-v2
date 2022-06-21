@@ -15,8 +15,8 @@ const router = Router()
 // create one link
 router.post('/', memoryToken, validateLink, createLink)
 
-// get one link by ID
-router.get('/:id', memoryToken, validateParam, getLink)
+// get one link by short url
+router.get('/:short', getLink)
 
 // getAll links
 router.get('/', memoryToken, getLinks)
