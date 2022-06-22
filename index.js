@@ -9,6 +9,7 @@ import cookieParser from 'cookie-parser'
 
 const app = express()
 
+// change to deploy
 const whiteList = [process.env.ORIGIN_REACT, process.env.ORIGIN_VUE]
 app.use(
   cors({
@@ -21,7 +22,7 @@ app.use(
 )
 
 app.use(express.json())
-app.use(express.static('public'))
+// app.use(express.static('public'))
 app.use(cookieParser())
 app.use('/api/v1', authRouter)
 app.use('/api/v1/link', linkRouter)

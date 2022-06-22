@@ -46,16 +46,6 @@ export const login = async (req, res) => {
   }
 }
 
-export const test = async (req, res) => {
-  try {
-    const user = await User.findById(req.uid)
-    return res.json({ email: user.email })
-  } catch (error) {
-    console.log(error)
-    res.status(500)
-  }
-}
-
 export const refresh = (req, res) => {
   try {
     const { token, expiresIn } = memoryToken(req.uid)
